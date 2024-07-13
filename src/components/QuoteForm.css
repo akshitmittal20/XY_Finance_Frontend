@@ -1,0 +1,93 @@
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+  }
+  
+  .quote-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #1f1f1f;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .quote-form h2 {
+    margin-bottom: 20px;
+    color: #ff9800; /* Highlighted heading */
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+  }
+  
+  .form-group select,
+  .form-group input {
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    width: 100%;
+  }
+  
+  .form-group select:focus,
+  .form-group input:focus {
+    border-color: #ff9800;
+  }
+  
+  .error-message {
+    color: red;
+    margin-bottom: 15px;
+  }
+  
+  .quote-button,
+  .bridge-button {
+    padding: 10px 20px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .quote-button:hover,
+  .bridge-button:hover {
+    background-color: #e68a00;
+  }
+  
+  .quote-result,
+  .transaction-params {
+    width: 100%;
+    background: #2c2c2c;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-height: 300px; /* Limit the height */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .quote-result h2,
+  .transaction-params h2 {
+    color: #ff9800; /* Highlighted heading */
+  }
+  
+  pre {
+    white-space: pre-wrap; /* Allow text wrapping */
+    word-wrap: break-word; /* Prevent overflow */
+  }
+  
