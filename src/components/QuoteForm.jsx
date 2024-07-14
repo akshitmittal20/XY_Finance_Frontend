@@ -28,6 +28,7 @@ const QuoteForm = () => {
   const [selectedDstSwapProvider, setSelectedDstSwapProvider] = useState('');
   const [isQuoteModalVisible, setIsQuoteModalVisible] = useState(false);
   const [isBridgeModalVisible, setIsBridgeModalVisible] = useState(false);
+  const [bridgeError, setBridgeError] = useState('');
 
   useEffect(() => {
     dispatch(fetchChains());
@@ -87,8 +88,14 @@ const QuoteForm = () => {
         dstSwapProvider: selectedDstSwapProvider,
       };
 
-      dispatch(fetchTransactionData(params));
-      setIsBridgeModalVisible(true); // Show the bridge modal
+      dispatch(fetchTransactionData(params)).then((response) => {
+        if (response.payload && response.payload.success === false) {
+          setBridgeError('Could not process, please check your amount or token.');
+        } else {
+          setBridgeError('');
+          setIsBridgeModalVisible(true); // Show the bridge modal
+        }
+      });
     }
   };
 
@@ -188,6 +195,7 @@ const QuoteForm = () => {
         />
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {bridgeError && <p className="error-message">{bridgeError}</p>}
       <button type="submit" className="quote-button">Get Quote</button>
       <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
       
