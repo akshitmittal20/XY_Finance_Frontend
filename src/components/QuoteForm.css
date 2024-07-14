@@ -91,3 +91,18 @@ pre {
   white-space: pre-wrap; /* Allow text wrapping */
   word-wrap: break-word; /* Prevent overflow */
 }
+.quote-result h2 {
+  color: #ff9800; /* Highlighted heading */
+}
+
+.route {
+  background: #333;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.route h3 {
+  color: #ff9800;
+  margin-bottom: 10px;
+}

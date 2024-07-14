@@ -1,15 +1,12 @@
 import React from 'react';
 
 const QuoteDisplay = ({ quote }) => {
-  if (!quote || !quote.routes) {
-    return null; // Don't render anything if quote or quote.routes is undefined
-  }
-
   return (
     <div className="quote-result">
       <h2>Quote</h2>
       {quote.routes.map((route, index) => (
-        <div key={index}>
+        <div key={index} className="route">
+          <h3>Route {index + 1}</h3>
           <p><strong>Source Chain ID:</strong> {route.srcChainId}</p>
           <p><strong>Source Token Address:</strong> {route.srcQuoteTokenAddress}</p>
           <p><strong>Source Token Amount:</strong> {route.srcQuoteTokenAmount}</p>
