@@ -1,12 +1,16 @@
 import React from 'react';
 
 const QuoteDisplay = ({ quote }) => {
+  if (!quote || !quote.routes) {
+    return null;
+  }
+
   return (
     <div className="quote-result">
       <h2>Quote</h2>
       {quote.routes.map((route, index) => (
         <div key={index} className="route">
-          <h3>Route {index + 1}</h3>
+          <h3 style={{ color: '#ff9800' }}>Route {index + 1}</h3>
           <p><strong>Source Chain ID:</strong> {route.srcChainId}</p>
           <p><strong>Source Token Address:</strong> {route.srcQuoteTokenAddress}</p>
           <p><strong>Source Token Amount:</strong> {route.srcQuoteTokenAmount}</p>

@@ -28,8 +28,6 @@ const QuoteForm = () => {
   const [selectedDstSwapProvider, setSelectedDstSwapProvider] = useState('');
   const [isQuoteModalVisible, setIsQuoteModalVisible] = useState(false);
   const [isBridgeModalVisible, setIsBridgeModalVisible] = useState(false);
-  const [quoteModalContent, setQuoteModalContent] = useState(null);
-  const [bridgeModalContent, setBridgeModalContent] = useState(null);
 
   useEffect(() => {
     dispatch(fetchChains());
@@ -69,14 +67,8 @@ const QuoteForm = () => {
       dstQuoteTokenAddress: dstToken,
       slippage
     }));
+    setIsQuoteModalVisible(true); // Show the quote modal
   };
-
-  useEffect(() => {
-    if (quote) {
-      setQuoteModalContent(quote);
-      setIsQuoteModalVisible(true);
-    }
-  }, [quote]);
 
   const handleBridge = () => {
     if (quote) {
@@ -96,24 +88,15 @@ const QuoteForm = () => {
       };
 
       dispatch(fetchTransactionData(params));
-      setBridgeModalContent(params);
-      setIsBridgeModalVisible(true);
+      setIsBridgeModalVisible(true); // Show the bridge modal
     }
   };
 
-  const handleQuoteModalOk = () => {
+  const closeQuoteModal = () => {
     setIsQuoteModalVisible(false);
   };
 
-  const handleQuoteModalCancel = () => {
-    setIsQuoteModalVisible(false);
-  };
-
-  const handleBridgeModalOk = () => {
-    setIsBridgeModalVisible(false);
-  };
-
-  const handleBridgeModalCancel = () => {
+  const closeBridgeModal = () => {
     setIsBridgeModalVisible(false);
   };
 
@@ -206,18 +189,26 @@ const QuoteForm = () => {
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <button type="submit" className="quote-button">Get Quote</button>
-      {quote && <QuoteDisplay quote={quote} />}
       <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
-      {transactionParams && <TransactionParamsDisplay transactionParams={transactionParams} />}
       
-      <Modal title="Quote Confirmation" visible={isQuoteModalVisible} onOk={handleQuoteModalOk} onCancel={handleQuoteModalCancel}>
-        <p>Quote received successfully!</p>
-        <pre>{JSON.stringify(quoteModalContent, null, 2)}</pre>
+      <Modal
+        title="Quote Result"
+        visible={isQuoteModalVisible}
+        onCancel={closeQuoteModal}
+        footer={null}
+        bodyStyle={{ backgroundColor: '#1f1f1f', color: '#fff' }} // Set modal background to black and text to white
+      >
+        {quote && <QuoteDisplay quote={quote} />}
       </Modal>
-      
-      <Modal title="Bridge Confirmation" visible={isBridgeModalVisible} onOk={handleBridgeModalOk} onCancel={handleBridgeModalCancel}>
-        <p>Bridge action initiated successfully!</p>
-        <pre>{JSON.stringify(bridgeModalContent, null, 2)}</pre>
+
+      <Modal
+        title="Bridge Transaction Parameters"
+        visible={isBridgeModalVisible}
+        onCancel={closeBridgeModal}
+        footer={null}
+        bodyStyle={{ backgroundColor: '#1f1f1f', color: '#fff' }} // Set modal background to black and text to white
+      >
+        {transactionParams && <TransactionParamsDisplay transactionParams={transactionParams} />}
       </Modal>
     </form>
   );
