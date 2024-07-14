@@ -5,8 +5,8 @@ import { fetchTokens } from '../store/slices/tokensSlice';
 import { fetchQuoteData, fetchTransactionData } from '../store/slices/quoteSlice';
 import { fetchSupportedSwapProviders } from '../services/api';
 import './QuoteForm.css'; // Import the CSS file
-import QuoteDisplay from './QuoteDisplay'; // Import the QuoteDisplay component
-import TransactionParamsDisplay from './TransactionParamsDisplay'; // Import the TransactionParamsDisplay component
+import QuoteDisplay from './QuoteDisplay'; // Import the new QuoteDisplay component
+import TransactionParamsDisplay from './TransactionParamsDisplay';
 
 const QuoteForm = () => {
   const dispatch = useDispatch();
@@ -84,8 +84,6 @@ const QuoteForm = () => {
       };
 
       dispatch(fetchTransactionData(params));
-    } else {
-      alert("Please get a quote first.");
     }
   };
 
@@ -178,8 +176,8 @@ const QuoteForm = () => {
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <button type="submit" className="quote-button">Get Quote</button>
-      <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
       {quote && <QuoteDisplay quote={quote} />}
+      <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
       {transactionParams && <TransactionParamsDisplay transactionParams={transactionParams} />}
     </form>
   );

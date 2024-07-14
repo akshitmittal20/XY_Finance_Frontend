@@ -15,6 +15,14 @@ const QuoteDisplay = ({ quote }) => {
           <p><strong>Slippage:</strong> {route.slippage}%</p>
           <p><strong>Gas Needed:</strong> {route.estimatedGas}</p>
           <p><strong>Provider:</strong> {route.srcSwapDescription.provider}</p>
+          <p><strong>Destination Token Amount:</strong> {route.dstQuoteTokenAmount}</p>
+          <p><strong>Minimum Receive Amount:</strong> {route.minReceiveAmount}</p>
+          <h4>Bridge Description</h4>
+          <p><strong>Provider:</strong> {route.bridgeDescription.provider}</p>
+          <p><strong>Source Bridge Token Address:</strong> {route.bridgeDescription.srcBridgeTokenAddress}</p>
+          <p><strong>Destination Bridge Token Address:</strong> {route.bridgeDescription.dstBridgeTokenAddress}</p>
+          <p><strong>Bridge Fee Amount:</strong> {route.bridgeDescription.bridgeFeeAmount}</p>
+          <p><strong>Bridge Fee Token:</strong> {route.bridgeDescription.bridgeFeeToken.symbol}</p>
         </div>
       ))}
     </div>
