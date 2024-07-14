@@ -4,6 +4,7 @@
 This is the frontend application for the Bridge Application project, built using React.js and Redux for state management. It provides an interface for users to fetch token and chain data, get quotes for token swaps, and display transaction parameters.
 
 ## Screenshots
+<img width="1041" alt="Screenshot 2024-07-14 at 6 48 28 AM" src="https://github.com/user-attachments/assets/6fd6b164-2729-46c5-85b5-80e419c930cd">
 
 ![Bridge Application](./src/assets/Screenshot%202024-07-13%20at%209.48.46%20PM.png)
 ![Bridge Application](./src/assets/Screenshot%202024-07-13%20at%209.48.58%20PM.png)
