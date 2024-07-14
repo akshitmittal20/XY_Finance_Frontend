@@ -4,9 +4,10 @@ import { fetchChains } from '../store/slices/chainsSlice';
 import { fetchTokens } from '../store/slices/tokensSlice';
 import { fetchQuoteData, fetchTransactionData } from '../store/slices/quoteSlice';
 import { fetchSupportedSwapProviders } from '../services/api';
-import './QuoteForm.css'; // Import the CSS file
-import QuoteDisplay from './QuoteDisplay'; // Import the new QuoteDisplay component
+import './QuoteForm.css';
+import QuoteDisplay from './QuoteDisplay';
 import TransactionParamsDisplay from './TransactionParamsDisplay';
+import { Modal, Button } from 'antd';
 
 const QuoteForm = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ const QuoteForm = () => {
   const [dstSwapProviders, setDstSwapProviders] = useState([]);
   const [selectedSrcSwapProvider, setSelectedSrcSwapProvider] = useState('');
   const [selectedDstSwapProvider, setSelectedDstSwapProvider] = useState('');
+  const [isQuoteModalVisible, setIsQuoteModalVisible] = useState(false);
+  const [isBridgeModalVisible, setIsBridgeModalVisible] = useState(false);
+  const [quoteModalContent, setQuoteModalContent] = useState(null);
+  const [bridgeModalContent, setBridgeModalContent] = useState(null);
 
   useEffect(() => {
     dispatch(fetchChains());
@@ -66,6 +71,13 @@ const QuoteForm = () => {
     }));
   };
 
+  useEffect(() => {
+    if (quote) {
+      setQuoteModalContent(quote);
+      setIsQuoteModalVisible(true);
+    }
+  }, [quote]);
+
   const handleBridge = () => {
     if (quote) {
       const params = {
@@ -84,7 +96,25 @@ const QuoteForm = () => {
       };
 
       dispatch(fetchTransactionData(params));
+      setBridgeModalContent(params);
+      setIsBridgeModalVisible(true);
     }
+  };
+
+  const handleQuoteModalOk = () => {
+    setIsQuoteModalVisible(false);
+  };
+
+  const handleQuoteModalCancel = () => {
+    setIsQuoteModalVisible(false);
+  };
+
+  const handleBridgeModalOk = () => {
+    setIsBridgeModalVisible(false);
+  };
+
+  const handleBridgeModalCancel = () => {
+    setIsBridgeModalVisible(false);
   };
 
   return (
@@ -179,6 +209,16 @@ const QuoteForm = () => {
       {quote && <QuoteDisplay quote={quote} />}
       <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
       {transactionParams && <TransactionParamsDisplay transactionParams={transactionParams} />}
+      
+      <Modal title="Quote Confirmation" visible={isQuoteModalVisible} onOk={handleQuoteModalOk} onCancel={handleQuoteModalCancel}>
+        <p>Quote received successfully!</p>
+        <pre>{JSON.stringify(quoteModalContent, null, 2)}</pre>
+      </Modal>
+      
+      <Modal title="Bridge Confirmation" visible={isBridgeModalVisible} onOk={handleBridgeModalOk} onCancel={handleBridgeModalCancel}>
+        <p>Bridge action initiated successfully!</p>
+        <pre>{JSON.stringify(bridgeModalContent, null, 2)}</pre>
+      </Modal>
     </form>
   );
 };
