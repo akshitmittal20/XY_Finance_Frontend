@@ -4,7 +4,9 @@ import { fetchChains } from '../store/slices/chainsSlice';
 import { fetchTokens } from '../store/slices/tokensSlice';
 import { fetchQuoteData, fetchTransactionData } from '../store/slices/quoteSlice';
 import { fetchSupportedSwapProviders } from '../services/api';
-import './QuoteForm.css'; // Import the CSS file
+import './QuoteForm.css';
+import QuoteDisplay from './QuoteDisplay'; 
+import TransactionParamsDisplay from './TransactionParamsDisplay'; 
 
 const QuoteForm = () => {
   const dispatch = useDispatch();
@@ -45,7 +47,7 @@ const QuoteForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const minThreshold = 247619047619047; // Example minimum threshold in wei for ETH
+    const minThreshold = 247619047619047;
 
     if (Number(amount) < minThreshold) {
       setErrorMessage(`Amount should be at least ${minThreshold} wei`);
@@ -74,7 +76,7 @@ const QuoteForm = () => {
         dstQuoteTokenAddress: dstToken,
         slippage,
         bridgeProvider: quote.routes[0].bridgeDescription.provider,
-        receiver: '0x9cEEEbdF49cF5DEa891C9D74f8ea03af2aCf284F', // Replace with actual receiver address
+        receiver: '0x9cEEEbdF49cF5DEa891C9D74f8ea03af2aCf284F',
         srcBridgeTokenAddress: quote.routes[0].bridgeDescription.srcBridgeTokenAddress,
         dstBridgeTokenAddress: quote.routes[0].bridgeDescription.dstBridgeTokenAddress,
         srcSwapProvider: selectedSrcSwapProvider,
@@ -176,19 +178,11 @@ const QuoteForm = () => {
       <button type="submit" className="quote-button">Get Quote</button>
       {quote && (
         <>
-          <div className="quote-result">
-            <h2>Quote</h2>
-            <pre>{JSON.stringify(quote, null, 2)}</pre>
-          </div>
+          <QuoteDisplay quote={quote} />
           <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
         </>
       )}
-      {transactionParams && (
-        <div className="transaction-params">
-          <h2>Transaction Parameters</h2>
-          <pre>{JSON.stringify(transactionParams, null, 2)}</pre>
-        </div>
-      )}
+      {transactionParams && <TransactionParamsDisplay transactionParams={transactionParams} />}
     </form>
   );
 };
