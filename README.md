@@ -1,4 +1,6 @@
+Certainly! Here's the updated `README.md` file with the added section for sample test inputs:
 
+```markdown
 # Bridge Application Frontend
 
 This is the frontend application for the Bridge Application project, built using React.js and Redux for state management. It provides an interface for users to fetch token and chain data, get quotes for token swaps, and display transaction parameters.
@@ -96,6 +98,19 @@ frontend_XY_Finance/
 9. **Get Quote**: Click the "Get Quote" button to fetch the quote.
 10. **Bridge**: If a quote is fetched successfully, click the "Bridge" button to get the transaction parameters.
 
+## Sample Test Inputs
+
+Here are a few sample correct test inputs for the quote form:
+
+- **Source Chain**: ETHEREUM
+- **Source Token**: ZRO
+- **Source Swap Provider**: OKX DEX
+- **Amount**: 1000000000000000000
+- **Destination Chain**: BSC
+- **Destination Token**: ZRO
+- **Destination Swap Provider**: OKX DEX
+- **Slippage**: 1
+
 ## API Endpoints
 
 - **GET /api/supportedChains**: Fetches supported chains.
@@ -131,4 +146,4 @@ This application uses the XY Finance API to fetch blockchain and token data.
 Thank you for using the Bridge Application. For any queries or feedback, please contact Akshit Mittal.
 ```
 
-This `README.md` file provides a comprehensive overview of your frontend project, including installation instructions, project structure, features, and more.
+This `README.md` file now includes a section for sample test inputs, providing users with example values to use when testing the quote form.
