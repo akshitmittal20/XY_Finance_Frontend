@@ -2,7 +2,7 @@ import React from 'react';
 
 const QuoteDisplay = ({ quote }) => {
   if (!quote || !quote.routes) {
-    return null;
+    return <div className="quote-result">No routes available</div>;
   }
 
   return (
@@ -18,15 +18,21 @@ const QuoteDisplay = ({ quote }) => {
           <p><strong>Destination Token Address:</strong> {route.dstQuoteTokenAddress}</p>
           <p><strong>Slippage:</strong> {route.slippage}%</p>
           <p><strong>Gas Needed:</strong> {route.estimatedGas}</p>
-          <p><strong>Provider:</strong> {route.srcSwapDescription.provider}</p>
+          {route.srcSwapDescription && (
+            <p><strong>Provider:</strong> {route.srcSwapDescription.provider}</p>
+          )}
           <p><strong>Destination Token Amount:</strong> {route.dstQuoteTokenAmount}</p>
           <p><strong>Minimum Receive Amount:</strong> {route.minReceiveAmount}</p>
-          <h4>Bridge Description</h4>
-          <p><strong>Provider:</strong> {route.bridgeDescription.provider}</p>
-          <p><strong>Source Bridge Token Address:</strong> {route.bridgeDescription.srcBridgeTokenAddress}</p>
-          <p><strong>Destination Bridge Token Address:</strong> {route.bridgeDescription.dstBridgeTokenAddress}</p>
-          <p><strong>Bridge Fee Amount:</strong> {route.bridgeDescription.bridgeFeeAmount}</p>
-          <p><strong>Bridge Fee Token:</strong> {route.bridgeDescription.bridgeFeeToken.symbol}</p>
+          {route.bridgeDescription && (
+            <>
+              <h4>Bridge Description</h4>
+              <p><strong>Provider:</strong> {route.bridgeDescription.provider}</p>
+              <p><strong>Source Bridge Token Address:</strong> {route.bridgeDescription.srcBridgeTokenAddress}</p>
+              <p><strong>Destination Bridge Token Address:</strong> {route.bridgeDescription.dstBridgeTokenAddress}</p>
+              <p><strong>Bridge Fee Amount:</strong> {route.bridgeDescription.bridgeFeeAmount}</p>
+              <p><strong>Bridge Fee Token:</strong> {route.bridgeDescription.bridgeFeeToken.symbol}</p>
+            </>
+          )}
         </div>
       ))}
     </div>

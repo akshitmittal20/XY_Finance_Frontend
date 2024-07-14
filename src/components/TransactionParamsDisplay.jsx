@@ -16,10 +16,16 @@ const TransactionParamsDisplay = ({ transactionParams }) => {
       <p><strong>Destination Chain ID:</strong> {route.dstChainId}</p>
       <p><strong>Destination Token Address:</strong> {route.dstQuoteTokenAddress}</p>
       <p><strong>Slippage:</strong> {route.slippage}%</p>
-      <p><strong>Bridge Provider:</strong> {route.bridgeDescription.provider}</p>
-      <p><strong>Bridge Contract Address:</strong> {route.bridgeDescription.bridgeContractAddress}</p>
+      {route.bridgeDescription && (
+        <>
+          <p><strong>Bridge Provider:</strong> {route.bridgeDescription.provider}</p>
+          <p><strong>Bridge Contract Address:</strong> {route.bridgeDescription.bridgeContractAddress}</p>
+        </>
+      )}
       <p><strong>Gas Needed:</strong> {route.estimatedGas}</p>
-      <p><strong>Provider:</strong> {route.srcSwapDescription.provider}</p>
+      {route.srcSwapDescription && (
+        <p><strong>Provider:</strong> {route.srcSwapDescription.provider}</p>
+      )}
     </div>
   );
 };
