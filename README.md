@@ -1,6 +1,3 @@
-Certainly! Here's the updated `README.md` file with the added section for sample test inputs:
-
-```markdown
 # Bridge Application Frontend
 
 This is the frontend application for the Bridge Application project, built using React.js and Redux for state management. It provides an interface for users to fetch token and chain data, get quotes for token swaps, and display transaction parameters.
