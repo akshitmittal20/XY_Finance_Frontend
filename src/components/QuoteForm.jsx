@@ -29,7 +29,8 @@ const QuoteForm = () => {
   const [isQuoteModalVisible, setIsQuoteModalVisible] = useState(false);
   const [isBridgeModalVisible, setIsBridgeModalVisible] = useState(false);
   const [bridgeError, setBridgeError] = useState(''); // State to handle bridge errors
-  const [loading, setLoading] = useState(false); // State to handle loading
+  const [quoteLoading, setQuoteLoading] = useState(false); // State to handle loading for Get Quote
+  const [bridgeLoading, setBridgeLoading] = useState(false); // State to handle loading for Bridge
 
   useEffect(() => {
     dispatch(fetchChains());
@@ -62,6 +63,8 @@ const QuoteForm = () => {
     setErrorMessage('');
     setBridgeError(''); // Clear bridge error message
 
+    setQuoteLoading(true); // Show loading spinner for Get Quote
+
     dispatch(fetchQuoteData({
       srcChainId,
       srcQuoteTokenAddress: srcToken,
@@ -69,13 +72,21 @@ const QuoteForm = () => {
       dstChainId,
       dstQuoteTokenAddress: dstToken,
       slippage
-    }));
-    setIsQuoteModalVisible(true); // Show the quote modal
+    }))
+      .unwrap()
+      .then(() => {
+        setQuoteLoading(false); // Hide loading spinner
+        setIsQuoteModalVisible(true); // Show the quote modal
+      })
+      .catch(() => {
+        setQuoteLoading(false); // Hide loading spinner
+        setErrorMessage('Could not process the quote, please check your input.');
+      });
   };
 
   const handleBridge = () => {
     setBridgeError(''); // Clear bridge error message before making the request
-    setLoading(true); // Show loading spinner
+    setBridgeLoading(true); // Show loading spinner
 
     if (quote && quote.routes && quote.routes.length > 0) {
       const params = {
@@ -96,15 +107,15 @@ const QuoteForm = () => {
       dispatch(fetchTransactionData(params))
         .unwrap()
         .then(() => {
-          setLoading(false); // Hide loading spinner
+          setBridgeLoading(false); // Hide loading spinner
           setIsBridgeModalVisible(true); // Show the bridge modal
         })
         .catch(() => {
-          setLoading(false); // Hide loading spinner
+          setBridgeLoading(false); // Hide loading spinner
           setBridgeError('Could not process, please check your amount or token.');
         });
     } else {
-      setLoading(false); // Hide loading spinner
+      setBridgeLoading(false); // Hide loading spinner
       setBridgeError('No routes found in the quote.');
     }
   };
@@ -229,14 +240,22 @@ const QuoteForm = () => {
         />
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {bridgeError && <p className="error-message">{bridgeError}</p>} {/* Display bridge error message */}
+      {bridgeError && <p className="error-message">{bridgeError}</p>}
       <button type="submit" className="quote-button">Get Quote</button>
       <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
-      {loading && (
+      
+      {quoteLoading && (
         <div className="loading-spinner">
           <Spin size="large" />
         </div>
       )}
+
+      {bridgeLoading && (
+        <div className="loading-spinner">
+          <Spin size="large" />
+        </div>
+      )}
+      
       <Modal
         title="Quote Result"
         visible={isQuoteModalVisible}
