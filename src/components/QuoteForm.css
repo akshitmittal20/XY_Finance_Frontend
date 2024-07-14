@@ -121,3 +121,11 @@ pre {
   color: #ffffff !important;
   border-color: #444 !important;
 }
+
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
