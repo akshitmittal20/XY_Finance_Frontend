@@ -4,9 +4,9 @@ import { fetchChains } from '../store/slices/chainsSlice';
 import { fetchTokens } from '../store/slices/tokensSlice';
 import { fetchQuoteData, fetchTransactionData } from '../store/slices/quoteSlice';
 import { fetchSupportedSwapProviders } from '../services/api';
-import './QuoteForm.css';
-import QuoteDisplay from './QuoteDisplay'; 
-import TransactionParamsDisplay from './TransactionParamsDisplay'; 
+import './QuoteForm.css'; // Import the CSS file
+import QuoteDisplay from './QuoteDisplay'; // Import the QuoteDisplay component
+import TransactionParamsDisplay from './TransactionParamsDisplay'; // Import the TransactionParamsDisplay component
 
 const QuoteForm = () => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const QuoteForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const minThreshold = 247619047619047;
+    const minThreshold = 247619047619047; // Example minimum threshold in wei for ETH
 
     if (Number(amount) < minThreshold) {
       setErrorMessage(`Amount should be at least ${minThreshold} wei`);
@@ -76,7 +76,7 @@ const QuoteForm = () => {
         dstQuoteTokenAddress: dstToken,
         slippage,
         bridgeProvider: quote.routes[0].bridgeDescription.provider,
-        receiver: '0x9cEEEbdF49cF5DEa891C9D74f8ea03af2aCf284F',
+        receiver: '0x9cEEEbdF49cF5DEa891C9D74f8ea03af2aCf284F', // Replace with actual receiver address
         srcBridgeTokenAddress: quote.routes[0].bridgeDescription.srcBridgeTokenAddress,
         dstBridgeTokenAddress: quote.routes[0].bridgeDescription.dstBridgeTokenAddress,
         srcSwapProvider: selectedSrcSwapProvider,
@@ -84,6 +84,8 @@ const QuoteForm = () => {
       };
 
       dispatch(fetchTransactionData(params));
+    } else {
+      alert("Please get a quote first.");
     }
   };
 
@@ -176,12 +178,8 @@ const QuoteForm = () => {
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <button type="submit" className="quote-button">Get Quote</button>
-      {quote && (
-        <>
-          <QuoteDisplay quote={quote} />
-          <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
-        </>
-      )}
+      <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
+      {quote && <QuoteDisplay quote={quote} />}
       {transactionParams && <TransactionParamsDisplay transactionParams={transactionParams} />}
     </form>
   );
