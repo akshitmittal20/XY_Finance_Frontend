@@ -28,7 +28,7 @@ const QuoteForm = () => {
   const [selectedDstSwapProvider, setSelectedDstSwapProvider] = useState('');
   const [isQuoteModalVisible, setIsQuoteModalVisible] = useState(false);
   const [isBridgeModalVisible, setIsBridgeModalVisible] = useState(false);
-  const [bridgeError, setBridgeError] = useState('');
+  const [bridgeError, setBridgeError] = useState(''); // State to handle bridge errors
 
   useEffect(() => {
     dispatch(fetchChains());
@@ -59,6 +59,7 @@ const QuoteForm = () => {
     }
 
     setErrorMessage('');
+    setBridgeError(''); // Clear bridge error message
 
     dispatch(fetchQuoteData({
       srcChainId,
@@ -72,7 +73,9 @@ const QuoteForm = () => {
   };
 
   const handleBridge = () => {
-    if (quote) {
+    setBridgeError(''); // Clear bridge error message before making the request
+
+    if (quote && quote.routes && quote.routes.length > 0) {
       const params = {
         srcChainId,
         srcQuoteTokenAddress: srcToken,
@@ -88,14 +91,16 @@ const QuoteForm = () => {
         dstSwapProvider: selectedDstSwapProvider,
       };
 
-      dispatch(fetchTransactionData(params)).then((response) => {
-        if (response.payload && response.payload.success === false) {
-          setBridgeError('Could not process, please check your amount or token.');
-        } else {
-          setBridgeError('');
+      dispatch(fetchTransactionData(params))
+        .unwrap()
+        .then(() => {
           setIsBridgeModalVisible(true); // Show the bridge modal
-        }
-      });
+        })
+        .catch(() => {
+          setBridgeError('Could not process, please check your amount or token.');
+        });
+    } else {
+      setBridgeError('No routes found in the quote.');
     }
   };
 
@@ -112,7 +117,10 @@ const QuoteForm = () => {
       <h2>Bridge Application</h2>
       <div className="form-group">
         <label>Source Chain</label>
-        <select value={srcChainId} onChange={(e) => setSrcChainId(e.target.value)}>
+        <select value={srcChainId} onChange={(e) => {
+          setSrcChainId(e.target.value);
+          setBridgeError(''); // Clear bridge error message on input change
+        }}>
           <option value="">Select Source Chain</option>
           {chains.map((chain) => (
             <option key={chain.chainId} value={chain.chainId}>
@@ -123,7 +131,10 @@ const QuoteForm = () => {
       </div>
       <div className="form-group">
         <label>Source Token</label>
-        <select value={srcToken} onChange={(e) => setSrcToken(e.target.value)}>
+        <select value={srcToken} onChange={(e) => {
+          setSrcToken(e.target.value);
+          setBridgeError(''); // Clear bridge error message on input change
+        }}>
           <option value="">Select Source Token</option>
           {tokens.map((token) => (
             <option key={token.address} value={token.address}>
@@ -134,7 +145,10 @@ const QuoteForm = () => {
       </div>
       <div className="form-group">
         <label>Source Swap Provider</label>
-        <select value={selectedSrcSwapProvider} onChange={(e) => setSelectedSrcSwapProvider(e.target.value)}>
+        <select value={selectedSrcSwapProvider} onChange={(e) => {
+          setSelectedSrcSwapProvider(e.target.value);
+          setBridgeError(''); // Clear bridge error message on input change
+        }}>
           <option value="">Select Source Swap Provider</option>
           {srcSwapProviders.map((provider) => (
             <option key={provider.name} value={provider.name}>
@@ -148,13 +162,19 @@ const QuoteForm = () => {
         <input
           type="number"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => {
+            setAmount(e.target.value);
+            setBridgeError(''); // Clear bridge error message on input change
+          }}
           placeholder="Amount"
         />
       </div>
       <div className="form-group">
         <label>Destination Chain</label>
-        <select value={dstChainId} onChange={(e) => setDstChainId(e.target.value)}>
+        <select value={dstChainId} onChange={(e) => {
+          setDstChainId(e.target.value);
+          setBridgeError(''); // Clear bridge error message on input change
+        }}>
           <option value="">Select Destination Chain</option>
           {chains.map((chain) => (
             <option key={chain.chainId} value={chain.chainId}>
@@ -165,7 +185,10 @@ const QuoteForm = () => {
       </div>
       <div className="form-group">
         <label>Destination Token</label>
-        <select value={dstToken} onChange={(e) => setDstToken(e.target.value)}>
+        <select value={dstToken} onChange={(e) => {
+          setDstToken(e.target.value);
+          setBridgeError(''); // Clear bridge error message on input change
+        }}>
           <option value="">Select Destination Token</option>
           {tokens.map((token) => (
             <option key={token.address} value={token.address}>
@@ -176,7 +199,10 @@ const QuoteForm = () => {
       </div>
       <div className="form-group">
         <label>Destination Swap Provider</label>
-        <select value={selectedDstSwapProvider} onChange={(e) => setSelectedDstSwapProvider(e.target.value)}>
+        <select value={selectedDstSwapProvider} onChange={(e) => {
+          setSelectedDstSwapProvider(e.target.value);
+          setBridgeError(''); // Clear bridge error message on input change
+        }}>
           <option value="">Select Destination Swap Provider</option>
           {dstSwapProviders.map((provider) => (
             <option key={provider.name} value={provider.name}>
@@ -190,12 +216,15 @@ const QuoteForm = () => {
         <input
           type="number"
           value={slippage}
-          onChange={(e) => setSlippage(e.target.value)}
+          onChange={(e) => {
+            setSlippage(e.target.value);
+            setBridgeError(''); // Clear bridge error message on input change
+          }}
           placeholder="Slippage"
         />
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {bridgeError && <p className="error-message">{bridgeError}</p>}
+      {bridgeError && <p className="error-message">{bridgeError}</p>} {/* Display bridge error message */}
       <button type="submit" className="quote-button">Get Quote</button>
       <button type="button" className="bridge-button" onClick={handleBridge}>Bridge</button>
       
