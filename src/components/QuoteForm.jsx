@@ -78,16 +78,19 @@ const QuoteForm = () => {
       dstQuoteTokenAddress: dstToken,
       slippage
     }))
-      .unwrap()
-      .then(() => {
+    .then((result) => {
+
+      if (result.type === 'quote/fetchQuote/rejected') {
+
+        setErrorMessage(result.payload || 'Could not process the quote, please check your input.');
+        setQuoteLoading(false); // Hide loading spinner
+
+      } else {
         setQuoteLoading(false); // Hide loading spinner
         setIsQuoteModalVisible(true); // Show the quote modal
+      }
       })
-      .catch((error) => {
-        setQuoteLoading(false); // Hide loading spinner
-        setErrorMessage(error.errorMsg || 'Could not process the quote, please check your input.');
-      });
-  };
+    };
 
   const handleBridge = () => {
     setBridgeError(''); // Clear bridge error message before making the request
