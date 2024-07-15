@@ -53,9 +53,14 @@ const QuoteForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const minThreshold = 247619047619047; // Example minimum threshold in wei for ETH
+    // Conversion rate from USD to Wei (assuming 1 ETH = 2000 USD and 1 ETH = 10^18 Wei)
+    const conversionRate = 2000;
+    const weiPerDollar = BigInt(10 ** 18) / BigInt(conversionRate);
+    const amountInWei = BigInt(Number(amount) * Number(weiPerDollar));
 
-    if (Number(amount) < minThreshold) {
+    const minThreshold = BigInt(247619047619047); // Example minimum threshold in Wei for ETH
+
+    if (amountInWei < minThreshold) {
       setErrorMessage(`Amount should be at least ${minThreshold} wei`);
       return;
     }
@@ -68,7 +73,7 @@ const QuoteForm = () => {
     dispatch(fetchQuoteData({
       srcChainId,
       srcQuoteTokenAddress: srcToken,
-      srcQuoteTokenAmount: amount,
+      srcQuoteTokenAmount: amountInWei.toString(),
       dstChainId,
       dstQuoteTokenAddress: dstToken,
       slippage
@@ -78,9 +83,9 @@ const QuoteForm = () => {
         setQuoteLoading(false); // Hide loading spinner
         setIsQuoteModalVisible(true); // Show the quote modal
       })
-      .catch(() => {
+      .catch((error) => {
         setQuoteLoading(false); // Hide loading spinner
-        setErrorMessage('Could not process the quote, please check your input.');
+        setErrorMessage(error.errorMsg || 'Could not process the quote, please check your input.');
       });
   };
 
@@ -88,11 +93,16 @@ const QuoteForm = () => {
     setBridgeError(''); // Clear bridge error message before making the request
     setBridgeLoading(true); // Show loading spinner
 
+    // Conversion rate from USD to Wei (assuming 1 ETH = 2000 USD and 1 ETH = 10^18 Wei)
+    const conversionRate = 2000;
+    const weiPerDollar = BigInt(10 ** 18) / BigInt(conversionRate);
+    const amountInWei = BigInt(Number(amount) * Number(weiPerDollar));
+
     if (quote && quote.routes && quote.routes.length > 0) {
       const params = {
         srcChainId,
         srcQuoteTokenAddress: srcToken,
-        srcQuoteTokenAmount: amount,
+        srcQuoteTokenAmount: amountInWei.toString(),
         dstChainId,
         dstQuoteTokenAddress: dstToken,
         slippage,
@@ -110,9 +120,9 @@ const QuoteForm = () => {
           setBridgeLoading(false); // Hide loading spinner
           setIsBridgeModalVisible(true); // Show the bridge modal
         })
-        .catch(() => {
+        .catch((error) => {
           setBridgeLoading(false); // Hide loading spinner
-          setBridgeError('Could not process, please check your amount or token.');
+          setBridgeError(error.errorMsg || 'Could not process, please check your amount or token.');
         });
     } else {
       setBridgeLoading(false); // Hide loading spinner
@@ -174,7 +184,7 @@ const QuoteForm = () => {
         </select>
       </div>
       <div className="form-group">
-        <label>Amount</label>
+        <label>Amount (USD)</label>
         <input
           type="number"
           value={amount}
@@ -182,7 +192,7 @@ const QuoteForm = () => {
             setAmount(e.target.value);
             setBridgeError(''); // Clear bridge error message on input change
           }}
-          placeholder="Amount"
+          placeholder="Amount in USD. Eg-1000"
         />
       </div>
       <div className="form-group">
@@ -228,7 +238,7 @@ const QuoteForm = () => {
         </select>
       </div>
       <div className="form-group">
-        <label>Slippage</label>
+        <label>Slippage (%)</label>
         <input
           type="number"
           value={slippage}

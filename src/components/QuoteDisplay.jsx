@@ -2,7 +2,7 @@ import React from 'react';
 
 const QuoteDisplay = ({ quote }) => {
   if (!quote || !quote.routes) {
-    return <div className="quote-result">No routes available</div>;
+    return <div className="quote-result">No routes available. Please try changing your Amount or the Route</div>;
   }
 
   return (
