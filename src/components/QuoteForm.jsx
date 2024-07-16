@@ -150,7 +150,7 @@ const QuoteForm = () => {
           setSrcChainId(e.target.value);
           setBridgeError(''); // Clear bridge error message on input change
         }}>
-          <option value="">Select Source Chain</option>
+          <option value="">Select Source Chain (Ex: ETHERUM)</option>
           {chains.map((chain) => (
             <option key={chain.chainId} value={chain.chainId}>
               {chain.name}
@@ -164,7 +164,7 @@ const QuoteForm = () => {
           setSrcToken(e.target.value);
           setBridgeError(''); // Clear bridge error message on input change
         }}>
-          <option value="">Select Source Token</option>
+          <option value="">Select Source Token (Ex: O)</option>
           {tokens.map((token) => (
             <option key={token.address} value={token.address}>
               {token.symbol}
@@ -178,7 +178,7 @@ const QuoteForm = () => {
           setSelectedSrcSwapProvider(e.target.value);
           setBridgeError(''); // Clear bridge error message on input change
         }}>
-          <option value="">Select Source Swap Provider</option>
+          <option value="">Select Source Swap Provider (Ex: OKK DEX)</option>
           {srcSwapProviders.map((provider) => (
             <option key={provider.name} value={provider.name}>
               {provider.name}
@@ -195,7 +195,7 @@ const QuoteForm = () => {
             setAmount(e.target.value);
             setBridgeError(''); // Clear bridge error message on input change
           }}
-          placeholder="Amount in USD. Eg-1000"
+          placeholder="Amount in USD. Ex:1000 USD"
         />
       </div>
       <div className="form-group">
@@ -204,7 +204,7 @@ const QuoteForm = () => {
           setDstChainId(e.target.value);
           setBridgeError(''); // Clear bridge error message on input change
         }}>
-          <option value="">Select Destination Chain</option>
+          <option value="">Select Destination Chain (Ex: BSC)</option>
           {chains.map((chain) => (
             <option key={chain.chainId} value={chain.chainId}>
               {chain.name}
@@ -218,7 +218,7 @@ const QuoteForm = () => {
           setDstToken(e.target.value);
           setBridgeError(''); // Clear bridge error message on input change
         }}>
-          <option value="">Select Destination Token</option>
+          <option value="">Select Destination Token (Ex: ETH)</option>
           {tokens.map((token) => (
             <option key={token.address} value={token.address}>
               {token.symbol}
@@ -232,7 +232,7 @@ const QuoteForm = () => {
           setSelectedDstSwapProvider(e.target.value);
           setBridgeError(''); // Clear bridge error message on input change
         }}>
-          <option value="">Select Destination Swap Provider</option>
+          <option value="">Select Destination Swap Provider (Ex: OKK DEX)</option>
           {dstSwapProviders.map((provider) => (
             <option key={provider.name} value={provider.name}>
               {provider.name}
@@ -249,7 +249,7 @@ const QuoteForm = () => {
             setSlippage(e.target.value);
             setBridgeError(''); // Clear bridge error message on input change
           }}
-          placeholder="Slippage"
+          placeholder="Slippage (Ex: 1%)"
         />
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
