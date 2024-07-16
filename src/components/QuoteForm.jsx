@@ -164,7 +164,7 @@ const QuoteForm = () => {
           setSrcToken(e.target.value);
           setBridgeError(''); // Clear bridge error message on input change
         }}>
-          <option value="">Select Source Token (Ex: O)</option>
+          <option value="">Select Source Token (Ex: ZRO)</option>
           {tokens.map((token) => (
             <option key={token.address} value={token.address}>
               {token.symbol}
